@@ -1,0 +1,129 @@
+levels:
+  1:
+    type: CHICKEN
+  2:
+    type: OCELOT
+    points: 200
+    exp: 10
+  3:
+    type: SHEEP
+    points: 250
+    exp: 10
+  4:
+    type: PIG
+    points: 500
+    exp: 10
+  5:
+    type: WOLF
+    points: 100
+    exp: 10
+  6:
+    type: COW
+    points: 2500
+    exp: 10
+  7:
+    type: MUSHROOM_COW
+    points: 2750
+    exp: 10
+  8:
+    type: CAVE_SPIDER
+    points: 3500
+    exp: 10
+  9:
+    type: SPIDER
+    points: 4000
+    exp: 10
+  10:
+    type: SKELETON
+    points: 4500
+    exp: 10
+  11:
+    type: ZOMBIE
+    points: 5000
+    exp: 10
+  12:
+    type: SLIME
+    points: 100
+    exp: 10
+  13:
+    type: ENDERMAN
+    points: 500
+    exp: 10
+  14:
+    type: PIG_ZOMBIE
+    points: 6500
+    exp: 10
+  15:
+    type: CREEPER
+    points: 7500
+    exp: 10
+  16:
+    type: BLAZE
+    points: 10000
+    exp: 10
+  17:
+    type: IRON_GOLEM
+    points: 15000
+    exp: 10
+  18:
+    type: SILVERFISH
+    points: 1000
+    exp: 10
+prices:
+  default: 35
+  types:
+    IRON_GOLEM: 100
+    SLIME: 80
+    ENDERMAN: 60
+    MUSHROOM_COW: 40
+    CAVE_SPIDER: 20
+alias:
+  CHICKEN: '&aChicken'
+  OCELOT: '&aOcelot'
+  SHEEP: '&aSheep'
+  PIG: '&aPig'
+  WOLF: '&aWolf'
+  COW: '&aCow'
+  MUSHROOM_COW: '&aMushroom Cow'
+  CAVE_SPIDER: '&aCave Spider'
+  SPIDER: '&aSpider'
+  SKELETON: '&aSkeleton'
+  ZOMBIE: '&aZombie'
+  SLIME: '&aSlime'
+  ENDERMAN: '&aEnderman'
+  PIG_ZOMBIE: '&aPig Zombie'
+  CREEPER: '&aCreeper'
+  BLAZE: '&aBlaze'
+  IRON_GOLEM: '&aIron Golem'
+  SILVERFISH: '&aSilverfish'
+messages:
+  player-offline: "&cThat player is not online"
+  player-level-other: "&a%player% is at level %level%"
+  player-level: "&aYou are at level %level%"
+  level-maxed: "&cYou are already at maximum level"
+  level-upgrade: "&aYou are now at level %level%"
+  required-exp: "&cYou need to have %exp% exp points to level up"
+  required-points: "&cYou need to have %points% points to level up"
+  player-points-other: "&a%player% has %points% points"
+  player-points: "&aYou have %points% points"
+  gained-points: "&aYou gained %points% points"
+  invalid-head: "&cYou have inserted an invalid type of head"
+  only-heads: "&cYou can only sell heads"
+  spawner-placed: "&aYou successfully placed this spawner, click it to view options"
+  spawner-denied: "&cYou cannot place this type of spawner"
+  spawner-upgraded: "&aYou successfully upgraded this spawner to level %level%"
+  required-exp-upgrade: "You do not have enough exp points to upgrade this spawner!"
+  spawner-maxed: "&cThis spawner is already at maximum tier"
+  spawner-refuel: "&aYou successfully added 1 day of fuel to this spawner"
+  required-exp-refuel: "&cYou do not have enough exp points to refuel this spawner!"
+  shop-entry: "&7Shop &a%name%&7: &cx&7: &a%x%, &cy&7: &a%y%, &cz&7: &a%z%"
+  no-permission: "&cYou don't have enough permissions to execute this command"
+  current-booster: "&aYour booster of %multiplier%x has %minutes% minutes remaining, the owner is %owner%"
+  booster-inactive: "&cThere is no booster active"
+  booster-active: "&cThere is an booster already active"
+  booster-activated: "&aYou have activated an %type% booster of %multiplier%x for %minutes% minutes"
+  gave-booster: "&aYou gave %player% an booster of %multiplier%x of %minutes% minutes"
+  booster-expired: "&cYour %type% booster has expired"
+  booster-paused: "&aYour personal booster has been paused"
+  booster-resumed: "&aYour personal booster has been resumed"
+  spawner-name: "%type% Spawner"

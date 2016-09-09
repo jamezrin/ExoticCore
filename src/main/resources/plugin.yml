@@ -1,0 +1,23 @@
+name: ExoticCore
+version: ${project.version}
+main: me.jaime29010.work.exoticcore.Main
+authors: [jaime29010]
+depend: [Vault]
+softdepend: [MVdWPlaceholderAPI]
+commands:
+  levelup:
+    permission: exoticcore.levelup
+    description: Command to levelup
+  level:
+    permission: exoticcore.levelup
+    description: Command to see your level
+  points:
+    permission: exoticcore.points
+    description: Command to see your points
+  exoticcore:
+    aliases: [exc]
+    permission: exoticcore.admin
+    description: Command to manage the plugin
+  booster:
+    description: Command to manage the boosters
+    permission: exoticcore.booster
