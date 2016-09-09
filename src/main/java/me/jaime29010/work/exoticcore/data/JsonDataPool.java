@@ -6,15 +6,15 @@ import java.util.UUID;
 
 public final class JsonDataPool {
     private final Map<JsonLocation, JsonSpawner> spawners;
-    private final Map<UUID, JsonPlayer> players;
     private final Map<String, JsonLocation> shops;
     private final Map<UUID, JsonBooster> boosters; //null key is the global booster
+    private final Map<UUID, JsonPlayer> players;
 
     public JsonDataPool() {
         spawners = new HashMap<>();
-        players = new HashMap<>();
         shops = new HashMap<>();
         boosters = new HashMap<>();
+        players = new HashMap<>();
     }
 
     public Map<JsonLocation, JsonSpawner> getSpawners() {

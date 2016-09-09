@@ -27,8 +27,8 @@ public class LevelCommand implements CommandExecutor {
                     JsonPlayer wrapper = main.getDataPool().getPlayers().get(target.getUniqueId());
                     player.sendMessage(Messager.colorize(main.getConfig().getString("messages.player-level-other")
                             .replace("%player%", name)
-                            .replace("%level%", String.valueOf(wrapper.getLevel())
-                            )));
+                            .replace("%level%", String.valueOf(wrapper.getLevel()))
+                    ));
                 } else {
                     player.sendMessage(Messager.colorize(main.getConfig().getString("messages.player-offline")));
                 }
@@ -36,8 +36,8 @@ public class LevelCommand implements CommandExecutor {
             } else if (args.length == 0) {
                 JsonPlayer wrapper = main.getDataPool().getPlayers().get(player.getUniqueId());
                 player.sendMessage(Messager.colorize(main.getConfig().getString("messages.player-level")
-                        .replace("%level%", String.valueOf(wrapper.getLevel())
-                        )));
+                        .replace("%level%", String.valueOf(wrapper.getLevel()))
+                ));
                 return true;
             }
             player.sendMessage(ChatColor.RED + "Usage: /level [player]");

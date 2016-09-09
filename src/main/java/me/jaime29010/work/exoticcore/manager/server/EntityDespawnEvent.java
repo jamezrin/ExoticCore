@@ -1,4 +1,4 @@
-package me.jaime29010.work.exoticcore.utils.server;
+package me.jaime29010.work.exoticcore.manager.server;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;

@@ -1,4 +1,4 @@
-package me.jaime29010.work.exoticcore.utils;
+package me.jaime29010.work.exoticcore.manager;
 
 import me.jaime29010.work.exoticcore.Main;
 import org.bukkit.configuration.file.FileConfiguration;

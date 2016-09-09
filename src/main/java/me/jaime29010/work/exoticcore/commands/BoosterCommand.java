@@ -2,7 +2,7 @@ package me.jaime29010.work.exoticcore.commands;
 
 import me.jaime29010.work.exoticcore.Main;
 import me.jaime29010.work.exoticcore.data.JsonBooster;
-import me.jaime29010.work.exoticcore.utils.BoosterManager;
+import me.jaime29010.work.exoticcore.manager.BoosterManager;
 import me.jaime29010.work.exoticcore.utils.Messager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -133,7 +133,7 @@ public class BoosterCommand implements CommandExecutor {
             } else {
                 sender.sendMessage("This command can only be executed by a player");
                 if (sender.hasPermission("exoticcore.admin")) {
-                    sender.sendMessage("You can execute these commands");
+                    sender.sendMessage("You can execute these commands:");
                     Messager.send(sender, "&b/booster activate <multiplier> <minutes> [player] &7- &cActivates a booster, global if no player specified");
                     Messager.send(sender, "&b/booster give <player> <multiplier> <minutes> <personal:global> &7- &cGives an item to the player given, type is personal or global");
                 }

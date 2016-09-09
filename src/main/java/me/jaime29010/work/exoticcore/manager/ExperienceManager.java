@@ -1,4 +1,4 @@
-package me.jaime29010.work.exoticcore.utils;
+package me.jaime29010.work.exoticcore.manager;
 
 import org.bukkit.entity.Player;
 

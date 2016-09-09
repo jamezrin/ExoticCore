@@ -3,11 +3,16 @@ package me.jaime29010.work.exoticcore.ui;
 import me.jaime29010.work.exoticcore.Main;
 import me.jaime29010.work.exoticcore.data.JsonBooster;
 import me.jaime29010.work.exoticcore.data.JsonPlayer;
+import me.jaime29010.work.exoticcore.manager.EcononyManager;
 import me.jaime29010.work.exoticcore.utils.ItemCreator;
 import me.jaime29010.work.exoticcore.utils.Messager;
 import me.jaime29010.work.exoticcore.utils.SkullType;
+import me.jaime29010.work.exoticcore.utils.UUIDFetcher;
+import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,10 +22,12 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.bukkit.entity.EntityType.*;
 
@@ -70,12 +77,10 @@ public class ShopUI {
                     item = event.getCursor();
                 }
                 if (item == null) return;
-                JsonPlayer wrapper = main.getDataPool().getPlayers().get(player.getUniqueId());
                 if (item.getType() == Material.SKULL_ITEM) {
-                    SkullType skull = SkullType.from(item);
-                    if (skull == null) return;
-                    EntityType type = skull.getEntityType();
-                    if (type != EntityType.UNKNOWN && main.canEntity(type, player)) {
+                    SkullType type = SkullType.from(item);
+                    if (type != null && main.canEntity(type.getEntityType(), player)) {
+                        JsonPlayer wrapper = main.getDataPool().getPlayers().get(player.getUniqueId());
                         if (inventory instanceof PlayerInventory) {
                             if (event.isShiftClick()) {
                                 player.getInventory().clear(event.getSlot());
@@ -84,7 +89,7 @@ public class ShopUI {
                             main.getServer().getScheduler().runTask(main, inventory::clear);
                         }
 
-                        int points = main.getHeadPrice(type) * (item.getAmount() != 0 ? item.getAmount() : 1);
+                        int points = main.getHeadPrice(type.getEntityType()) * (item.getAmount() != 0 ? item.getAmount() : 1);
 
                         JsonBooster booster = main.getBoosterManager().getBooster(player);
                         if (booster != null) {
@@ -96,10 +101,41 @@ public class ShopUI {
                                 .replace("%points%", String.valueOf(points))
                         ));
                     } else {
-                        player.sendMessage(Messager.colorize(main.getConfig().getString("messages.invalid-head")));
-                        event.setCancelled(true);
-                        player.closeInventory();
-                        viewers.remove(player);
+                        SkullMeta meta = (SkullMeta) item.getItemMeta();
+                        if (meta.hasOwner()) {
+                            try {
+                                UUID uuid = UUIDFetcher.getUUIDOf(meta.getOwner());
+                                OfflinePlayer target = main.getServer().getOfflinePlayer(uuid);
+                                JsonPlayer wrapper = main.getDataPool().getPlayers().get(uuid);
+                                if (target != null && wrapper != null && wrapper.getBounty() != 0) {
+                                    if (inventory instanceof PlayerInventory) {
+                                        if (event.isShiftClick()) {
+                                            player.getInventory().clear(event.getSlot());
+                                        }
+                                    } else {
+                                        main.getServer().getScheduler().runTask(main, inventory::clear);
+                                    }
+
+                                    EconomyResponse response = EcononyManager.getEconomy().depositPlayer(target, wrapper.getBounty());
+                                    if (response.transactionSuccess()) {
+                                        player.sendMessage(Messager.colorize(main.getConfig().getString("messages.bounty-reward")
+                                                .replace("%bounty%", String.valueOf(wrapper.getBounty()))
+                                        ));
+                                        wrapper.setBounty(0);
+                                    }
+                                } else {
+                                    player.sendMessage(Messager.colorize(main.getConfig().getString("messages.not-bounty-reward")));
+                                }
+                            } catch (Exception e) {
+                                player.sendMessage(ChatColor.RED + "An error occurred while doing this operation");
+                                e.printStackTrace();
+                            }
+                        } else {
+                            player.sendMessage(Messager.colorize(main.getConfig().getString("messages.invalid-head")));
+                            event.setCancelled(true);
+                            player.closeInventory();
+                            viewers.remove(player);
+                        }
                     }
                 } else {
                     player.sendMessage(Messager.colorize(main.getConfig().getString("messages.only-heads")));

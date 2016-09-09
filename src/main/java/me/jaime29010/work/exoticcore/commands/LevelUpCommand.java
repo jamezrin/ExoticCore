@@ -2,7 +2,7 @@ package me.jaime29010.work.exoticcore.commands;
 
 import me.jaime29010.work.exoticcore.Main;
 import me.jaime29010.work.exoticcore.data.JsonPlayer;
-import me.jaime29010.work.exoticcore.utils.ExperienceManager;
+import me.jaime29010.work.exoticcore.manager.ExperienceManager;
 import me.jaime29010.work.exoticcore.utils.Messager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

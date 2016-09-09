@@ -1,4 +1,4 @@
-package me.jaime29010.work.exoticcore.utils.server;
+package me.jaime29010.work.exoticcore.manager.server;
 
 import net.minecraft.server.v1_8_R3.BlockPosition;
 import net.minecraft.server.v1_8_R3.Entity;

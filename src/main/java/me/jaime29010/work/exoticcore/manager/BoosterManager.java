@@ -1,7 +1,9 @@
-package me.jaime29010.work.exoticcore.utils;
+package me.jaime29010.work.exoticcore.manager;
 
 import me.jaime29010.work.exoticcore.Main;
 import me.jaime29010.work.exoticcore.data.JsonBooster;
+import me.jaime29010.work.exoticcore.utils.ItemCreator;
+import me.jaime29010.work.exoticcore.utils.Messager;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

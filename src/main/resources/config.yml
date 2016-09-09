@@ -77,6 +77,7 @@ prices:
     ENDERMAN: 60
     MUSHROOM_COW: 40
     CAVE_SPIDER: 20
+minimum-bounty: 10000
 alias:
   CHICKEN: '&aChicken'
   OCELOT: '&aOcelot'
@@ -127,3 +128,10 @@ messages:
   booster-paused: "&aYour personal booster has been paused"
   booster-resumed: "&aYour personal booster has been resumed"
   spawner-name: "%type% Spawner"
+  player-bounty: "&aThere is a bounty reward for your head of %bounty% dollars"
+  player-bounty-other: "&aThe bounty reward for the head of %player% is %bounty% dollars"
+  bounty-added: "&a%player% has added %amount% to the bounty of the head of %target%"
+  bounty-top-entry: "&7%pos%. &c%bounty% dollars &afor the head of &c%player%"
+  bounty-reward: "&aCongratulations! You got a reward of %bounty% dollars"
+  not-bounty-reward: "&cThe head you are trying to sell is worthless"
+  not-enough-bounty: "&cYou have to add 10k bounty atleast"

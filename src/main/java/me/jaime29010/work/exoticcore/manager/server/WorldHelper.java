@@ -1,4 +1,4 @@
-package me.jaime29010.work.exoticcore.utils.server;
+package me.jaime29010.work.exoticcore.manager.server;
 
 import me.jaime29010.work.exoticcore.Main;
 import org.bukkit.World;
@@ -66,5 +66,4 @@ public class WorldHelper implements Listener {
     public void onWorldUnload(WorldUnloadEvent event) {
         unlinkWorld(event.getWorld());
     }
-
 }
