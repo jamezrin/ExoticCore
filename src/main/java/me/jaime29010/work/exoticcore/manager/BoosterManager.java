@@ -110,6 +110,17 @@ public class BoosterManager implements Listener {
                             .replace("%multiplier%", String.valueOf(booster.getMultiplier()))
                             .replace("%minutes%", String.valueOf(booster.getMinutesRemaining()))
                     ));
+
+                    for (Player other : main.getServer().getOnlinePlayers()) {
+                        if (player != other) {
+                            other.sendMessage(Messager.colorize(main.getConfig().getString("messages.booster-activated-others")
+                                    .replace("%player%", player.getName())
+                                    .replace("%type%", "global")
+                                    .replace("%multiplier%", String.valueOf(booster.getMultiplier()))
+                                    .replace("%minutes%", String.valueOf(booster.getMinutesRemaining()))
+                            ));
+                        }
+                    }
                     main.getDataPool().getBoosters().put(null, booster);
                     player.setItemInHand(item);
                 } else {
@@ -138,6 +149,7 @@ public class BoosterManager implements Listener {
                             .replace("%multiplier%", String.valueOf(booster.getMultiplier()))
                             .replace("%minutes%", String.valueOf(booster.getMinutesRemaining()))
                     ));
+
                     main.getDataPool().getBoosters().put(player.getUniqueId(), booster);
                     player.setItemInHand(item);
                 } else {

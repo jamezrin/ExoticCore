@@ -102,7 +102,14 @@ public final class Main extends JavaPlugin {
             PlaceholderAPI.registerPlaceholder(this, "exotic_level", event -> {
                 if (event.isOnline()) {
                     JsonPlayer wrapper = database.getPlayers().get(event.getPlayer().getUniqueId());
-                    return Integer.toString(wrapper.getLevel());
+                    return String.valueOf(wrapper.getLevel());
+                }
+                return "Unknown";
+            });
+            PlaceholderAPI.registerPlaceholder(this, "exotic_points", event -> {
+                if (event.isOnline()) {
+                    JsonPlayer wrapper = database.getPlayers().get(event.getPlayer().getUniqueId());
+                    return String.valueOf(wrapper.getPoints());
                 }
                 return "Unknown";
             });

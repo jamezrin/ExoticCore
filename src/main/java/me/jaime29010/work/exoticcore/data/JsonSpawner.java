@@ -19,8 +19,8 @@ public final class JsonSpawner {
         return fuel;
     }
 
-    public long getFuelHours() {
-        return fuel / 3600;
+    public double getFuelHours() {
+        return (int) Math.ceil(fuel / 3600);
     }
 
     public void setFuel(long fuel) {

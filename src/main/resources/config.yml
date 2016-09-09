@@ -122,6 +122,7 @@ messages:
   current-booster: "&aYour booster of %multiplier%x has %minutes% minutes remaining, the owner is %owner%"
   booster-inactive: "&cThere is no booster active"
   booster-active: "&cThere is an booster already active"
+  booster-activated-others: "&a%player% has activated an %type% booster of %multiplier%x for %minutes% minutes"
   booster-activated: "&aYou have activated an %type% booster of %multiplier%x for %minutes% minutes"
   gave-booster: "&aYou gave %player% an booster of %multiplier%x of %minutes% minutes"
   booster-expired: "&cYour %type% booster has expired"

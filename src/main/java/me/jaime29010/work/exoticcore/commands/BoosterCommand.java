@@ -68,6 +68,15 @@ public class BoosterCommand implements CommandExecutor {
                                             .replace("%multiplier%", String.valueOf(booster.getMultiplier()))
                                             .replace("%minutes%", String.valueOf(booster.getMinutesRemaining()))
                                     ));
+
+                                    main.getServer().getOnlinePlayers().stream().filter(other -> sender != other).forEach(other -> {
+                                        other.sendMessage(Messager.colorize(main.getConfig().getString("messages.booster-activated-others")
+                                                .replace("%player%", sender.getName())
+                                                .replace("%type%", "global")
+                                                .replace("%multiplier%", String.valueOf(booster.getMultiplier()))
+                                                .replace("%minutes%", String.valueOf(booster.getMinutesRemaining()))
+                                        ));
+                                    });
                                 } else {
                                     sender.sendMessage(Messager.colorize(main.getConfig().getString("messages.booster-active")));
                                 }
