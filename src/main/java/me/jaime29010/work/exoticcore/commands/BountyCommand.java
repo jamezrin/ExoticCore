@@ -80,7 +80,9 @@ public class BountyCommand implements CommandExecutor {
                                 .replace("%bounty%", String.valueOf(wrapper.getBounty()))
                                 .replace("%player%", player.getName())
                         ));
-                        if (++index >= 10) break;
+                        if (++index >= 10) {
+                            return true;
+                        }
                     }
                     if (index != 10) {
                         sender.sendMessage(ChatColor.RED + "These results may not be complete");
