@@ -129,6 +129,9 @@ public class ShopUI {
                                     }
                                 } else {
                                     player.sendMessage(ChatColor.RED + "You cannot sell your own head");
+                                    event.setCancelled(true);
+                                    player.closeInventory();
+                                    viewers.remove(player);
                                 }
                             } catch (Exception e) {
                                 player.sendMessage(ChatColor.RED + "An error occurred while doing this operation");
