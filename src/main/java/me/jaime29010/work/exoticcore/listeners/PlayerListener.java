@@ -21,10 +21,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.Arrays;
 import java.util.List;
@@ -137,5 +139,14 @@ public class PlayerListener implements Listener {
                 }
             }
         }
+    }
+
+    @EventHandler
+    public void on(PlayerDeathEvent event) {
+        ItemStack item = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+        SkullMeta meta = (SkullMeta) item.getItemMeta();
+        meta.setOwner(event.getEntity().getName());
+        item.setItemMeta(meta);
+        event.getDrops().add(item);
     }
 }

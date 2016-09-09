@@ -30,19 +30,19 @@ public class BountyCommand implements CommandExecutor {
                 case "add": {
                     if (sender instanceof Player) {
                         Player player = (Player) sender;
-                        String name = args[0];
+                        String name = args[1];
                         Player target = main.getServer().getPlayer(name);
                         if (target != null) {
                             JsonPlayer wrapper = main.getDataPool().getPlayers().get(target.getUniqueId());
                             try {
-                                int amount = Integer.parseInt(args[1]);
+                                int amount = Integer.parseInt(args[2]);
                                 if (amount >= main.getConfig().getInt("minimum-bounty")) {
                                     if (EcononyManager.getEconomy().has(player, amount)) {
                                         EconomyResponse response = EcononyManager.getEconomy().withdrawPlayer(player, amount);
                                         if (response.transactionSuccess()) {
                                             wrapper.setBounty(wrapper.getBounty() + amount);
                                             main.getServer().getOnlinePlayers().forEach(other -> {
-                                                player.sendMessage(Messager.colorize(main.getConfig().getString("messages.bounty-added")
+                                                other.sendMessage(Messager.colorize(main.getConfig().getString("messages.bounty-added")
                                                         .replace("%player%", player.getName())
                                                         .replace("%amount%", String.valueOf(amount))
                                                         .replace("%target%", target.getName())
@@ -69,15 +69,15 @@ public class BountyCommand implements CommandExecutor {
                     return true;
                 }
                 case "top": {
-                    Map<UUID, JsonPlayer> output = PluginUtils.sortByValue(main.getDataPool().getPlayers(), (first, second) -> Integer.compare(first.getValue().getBounty(), second.getValue().getBounty()));
-                    int index = 0;
+                    Map<UUID, JsonPlayer> output = PluginUtils.sortByValue(main.getDataPool().getPlayers(), (first, second) -> Integer.compare(second.getValue().getBounty(), first.getValue().getBounty()));
+                    int index = 1;
                     for (Map.Entry<UUID, JsonPlayer> entry : output.entrySet()) {
                         OfflinePlayer player = main.getServer().getOfflinePlayer(entry.getKey());
                         JsonPlayer wrapper = entry.getValue();
                         if (player == null || wrapper == null) continue;
-                        sender.sendMessage(main.getConfig().getString("bounty-top-entry")
+                        sender.sendMessage(Messager.colorize(main.getConfig().getString("messages.bounty-top-entry")
                                 .replace("%pos%", String.valueOf(index))
-                                .replace("%bounty%", String.valueOf(wrapper.getBounty())
+                                .replace("%bounty%", String.valueOf(wrapper.getBounty()))
                                 .replace("%player%", player.getName())
                         ));
                         if (++index >= 10) break;
@@ -95,7 +95,7 @@ public class BountyCommand implements CommandExecutor {
                             JsonPlayer wrapper = main.getDataPool().getPlayers().get(target.getUniqueId());
                             sender.sendMessage(Messager.colorize(main.getConfig().getString("messages.player-bounty-other")
                                     .replace("%player%", name)
-                                    .replace("%bounty%", String.valueOf(wrapper.getLevel()))
+                                    .replace("%bounty%", String.valueOf(wrapper.getBounty()))
                             ));
                         } else {
                             sender.sendMessage(Messager.colorize(main.getConfig().getString("messages.player-offline")));

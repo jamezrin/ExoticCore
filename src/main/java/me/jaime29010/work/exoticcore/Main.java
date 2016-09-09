@@ -128,6 +128,7 @@ public final class Main extends JavaPlugin {
         getCommand("points").setExecutor(new PointsCommand(this));
         getCommand("level").setExecutor(new LevelCommand(this));
         getCommand("booster").setExecutor(new BoosterCommand(this));
+        getCommand("bounty").setExecutor(new BountyCommand(this));
     }
 
     @Override

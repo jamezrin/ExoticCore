@@ -105,26 +105,30 @@ public class ShopUI {
                         if (meta.hasOwner()) {
                             try {
                                 UUID uuid = UUIDFetcher.getUUIDOf(meta.getOwner());
-                                OfflinePlayer target = main.getServer().getOfflinePlayer(uuid);
-                                JsonPlayer wrapper = main.getDataPool().getPlayers().get(uuid);
-                                if (target != null && wrapper != null && wrapper.getBounty() != 0) {
-                                    if (inventory instanceof PlayerInventory) {
-                                        if (event.isShiftClick()) {
-                                            player.getInventory().clear(event.getSlot());
+                                if (!uuid.equals(player.getUniqueId())) {
+                                    OfflinePlayer target = main.getServer().getOfflinePlayer(uuid);
+                                    JsonPlayer wrapper = main.getDataPool().getPlayers().get(uuid);
+                                    if (target != null && wrapper != null && wrapper.getBounty() != 0) {
+                                        if (inventory instanceof PlayerInventory) {
+                                            if (event.isShiftClick()) {
+                                                player.getInventory().clear(event.getSlot());
+                                            }
+                                        } else {
+                                            main.getServer().getScheduler().runTask(main, inventory::clear);
+                                        }
+
+                                        EconomyResponse response = EcononyManager.getEconomy().depositPlayer(player, wrapper.getBounty());
+                                        if (response.transactionSuccess()) {
+                                            player.sendMessage(Messager.colorize(main.getConfig().getString("messages.bounty-reward")
+                                                    .replace("%bounty%", String.valueOf(wrapper.getBounty()))
+                                            ));
+                                            wrapper.setBounty(0);
                                         }
                                     } else {
-                                        main.getServer().getScheduler().runTask(main, inventory::clear);
-                                    }
-
-                                    EconomyResponse response = EcononyManager.getEconomy().depositPlayer(target, wrapper.getBounty());
-                                    if (response.transactionSuccess()) {
-                                        player.sendMessage(Messager.colorize(main.getConfig().getString("messages.bounty-reward")
-                                                .replace("%bounty%", String.valueOf(wrapper.getBounty()))
-                                        ));
-                                        wrapper.setBounty(0);
+                                        player.sendMessage(Messager.colorize(main.getConfig().getString("messages.not-bounty-reward")));
                                     }
                                 } else {
-                                    player.sendMessage(Messager.colorize(main.getConfig().getString("messages.not-bounty-reward")));
+                                    player.sendMessage(ChatColor.RED + "You cannot sell your own head");
                                 }
                             } catch (Exception e) {
                                 player.sendMessage(ChatColor.RED + "An error occurred while doing this operation");

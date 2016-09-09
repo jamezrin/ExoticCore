@@ -21,3 +21,5 @@ commands:
   booster:
     description: Command to manage the boosters
     permission: exoticcore.booster
+  bounty:
+    description: Command to manage the bounty
