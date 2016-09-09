@@ -88,7 +88,7 @@ public final class Main extends JavaPlugin {
             @Override
             public void run() {
                 database.getSpawners().values().forEach(wrapper -> {
-                    long fuel = wrapper.getFuelMillis();
+                    long fuel = wrapper.getFuel();
                     if (fuel > 0) {
                         wrapper.setFuel(--fuel);
                     }

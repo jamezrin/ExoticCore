@@ -43,7 +43,7 @@ public class SpawnerUI {
                 "&7Price per head: &c{price}".replace("{price}", String.valueOf(main.getHeadPrice(type)))), 1));
         inventory.setItem(14, ItemCreator.create(Material.COAL, "&cFuel Spawner", Arrays.asList(
                 "&7Duration: &c1 day",
-                "&7Fueled for: &c{fuel}".replace("{fuel}", TimeUtils.convert(spawner.getFuelMillis())),
+                "&7Fueled for: &c{fuel}".replace("{fuel}", TimeUtils.convert(spawner.getFuel())),
                 "&7Cost to refuel: &c{cost} xp".replace("{cost}", NumberFormatter.format(REFUEL_COST))), 1));
         viewers.put(player, spawner);
         player.openInventory(inventory);
@@ -155,7 +155,7 @@ public class SpawnerUI {
                         if (exp >= REFUEL_COST) {
                             ExperienceManager.setTotalExperience(player, exp - REFUEL_COST);
                             player.updateInventory();
-                            wrapper.setFuel(wrapper.getFuelMillis() + 86400);
+                            wrapper.setFuel(wrapper.getFuel() + 86400);
                             player.sendMessage(Messager.colorize(main.getConfig().getString("messages.spawner-refuel")));
                         } else {
                             player.sendMessage(Messager.colorize(main.getConfig().getString("messages.required-exp-refuel")));

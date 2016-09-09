@@ -90,7 +90,7 @@ public class PlayerListener implements Listener {
                     List<String> lore = item.getItemMeta().getLore();
                     int tier = Integer.valueOf(ChatColor.stripColor(lore.get(0).split("\\s+")[1]));
                     int fuel = Integer.valueOf(ChatColor.stripColor(lore.get(1).split("\\s+")[1]));
-                    wrapper = new JsonSpawner(fuel * 3600, tier);
+                    wrapper = new JsonSpawner(fuel, tier);
                 } else {
                     wrapper = new JsonSpawner(86400, 1);
                 }
@@ -130,7 +130,7 @@ public class PlayerListener implements Listener {
                     meta.setBlockState(state);
                     meta.setLore(Arrays.asList(
                             ChatColor.RED + "Tier:" + " " + ChatColor.GRAY + wrapper.getTier(),
-                            ChatColor.RED + "Fuel:" + " " + ChatColor.GRAY + wrapper.getFuelHours()));
+                            ChatColor.RED + "Fuel:" + " " + ChatColor.GRAY + wrapper.getFuel()));
                     meta.setDisplayName(Messager.colorize(main.getConfig().getString("messages.spawner-name")
                             .replace("%type%", main.getAlias(type))
                     ));

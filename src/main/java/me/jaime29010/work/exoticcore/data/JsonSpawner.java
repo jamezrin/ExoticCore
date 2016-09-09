@@ -15,12 +15,8 @@ public final class JsonSpawner {
         this.entities = new ArrayList<>();
     }
 
-    public long getFuelMillis() {
+    public long getFuel() {
         return fuel;
-    }
-
-    public double getFuelHours() {
-        return (int) Math.ceil(fuel / 3600);
     }
 
     public void setFuel(long fuel) {

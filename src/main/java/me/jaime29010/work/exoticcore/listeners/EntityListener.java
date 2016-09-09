@@ -32,7 +32,7 @@ public class EntityListener implements Listener {
                 spawner.getZ()
         ));
         if (wrapper != null) {
-            if (wrapper.getFuelMillis() > 0) {
+            if (wrapper.getFuel() > 0) {
                 wrapper.getEntities().add(entity.getUniqueId());
             } else {
                 event.setCancelled(true);
