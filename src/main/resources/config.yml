@@ -131,6 +131,8 @@ messages:
   spawner-name: "%type% Spawner"
   player-bounty: "&aThere is a bounty reward for your head of %bounty% dollars"
   player-bounty-other: "&aThe bounty reward for the head of %player% is %bounty% dollars"
+  player-no-bounty: "&cThere is no bounty reward for your head"
+  player-no-bounty-other: "&cThere is no bounty reward for the head of %player%"
   bounty-added: "&a%player% has added %amount% to the bounty of the head of %target%"
   bounty-top-entry: "&7%pos%. &c%bounty% dollars &afor the head of &c%player%"
   bounty-reward: "&aCongratulations! You got a reward of %bounty% dollars"

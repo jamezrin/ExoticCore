@@ -95,10 +95,16 @@ public class BountyCommand implements CommandExecutor {
                         Player target = main.getServer().getPlayer(name);
                         if (target != null) {
                             JsonPlayer wrapper = main.getDataPool().getPlayers().get(target.getUniqueId());
-                            sender.sendMessage(Messager.colorize(main.getConfig().getString("messages.player-bounty-other")
-                                    .replace("%player%", name)
-                                    .replace("%bounty%", String.valueOf(wrapper.getBounty()))
-                            ));
+                            if (wrapper.getBounty() != 0) {
+                                sender.sendMessage(Messager.colorize(main.getConfig().getString("messages.player-bounty-other")
+                                        .replace("%player%", name)
+                                        .replace("%bounty%", String.valueOf(wrapper.getBounty()))
+                                ));
+                            } else {
+                                sender.sendMessage(Messager.colorize(main.getConfig().getString("messages.player-no-bounty-other")
+                                        .replace("%player%", name)
+                                ));
+                            }
                         } else {
                             sender.sendMessage(Messager.colorize(main.getConfig().getString("messages.player-offline")));
                         }
@@ -110,9 +116,13 @@ public class BountyCommand implements CommandExecutor {
             if (sender instanceof Player) {
                 Player player = (Player) sender;
                 JsonPlayer wrapper = main.getDataPool().getPlayers().get(player.getUniqueId());
-                player.sendMessage(Messager.colorize(main.getConfig().getString("messages.player-bounty")
-                        .replace("%bounty%", String.valueOf(wrapper.getBounty()))
-                ));
+                if (wrapper.getBounty() != 0) {
+                    sender.sendMessage(Messager.colorize(main.getConfig().getString("messages.player-bounty")
+                            .replace("%bounty%", String.valueOf(wrapper.getBounty()))
+                    ));
+                } else {
+                    sender.sendMessage(Messager.colorize(main.getConfig().getString("messages.player-no-bounty")));
+                }
             } else {
                 sender.sendMessage("This command can only be executed by a player");
                 sender.sendMessage("You can execute these commands as console:");
