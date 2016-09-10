@@ -49,11 +49,11 @@ public final class Main extends JavaPlugin {
         builder.enableComplexMapKeySerialization();
 
         //fix for map key that is null
+        //gson does UUID.fromString even if the object is null, and it does not accept nulls
         builder.registerTypeAdapter(UUID.class, (JsonDeserializer<UUID>) (element, type, context) -> {
             if (element.isJsonNull() || element.getAsString().equals("null")) {
                 return null;
             }
-
             return UUID.fromString(element.getAsString());
         });
         gson = builder.create();
