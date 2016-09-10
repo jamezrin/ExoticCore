@@ -70,16 +70,20 @@ public class BoosterManager implements Listener {
 
     public JsonBooster getBooster(Player player) {
         JsonBooster booster = main.getDataPool().getBoosters().get(null);
-        if (booster != null && booster.isActive()) {
+        if (isActive(booster)) {
             return booster;
         }
 
         booster = main.getDataPool().getBoosters().get(player.getUniqueId());
-        if (booster != null && booster.isActive()) {
+        if (isActive(booster)) {
             return booster;
         }
 
         return null;
+    }
+
+    public boolean isActive(JsonBooster booster) {
+        return (booster != null && booster.isActive());
     }
 
     @EventHandler

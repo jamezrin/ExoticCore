@@ -1,7 +1,6 @@
 package me.jaime29010.work.exoticcore.ui;
 
 import me.jaime29010.work.exoticcore.Main;
-import me.jaime29010.work.exoticcore.data.JsonPlayer;
 import me.jaime29010.work.exoticcore.data.JsonSpawner;
 import me.jaime29010.work.exoticcore.manager.ExperienceManager;
 import me.jaime29010.work.exoticcore.utils.ItemCreator;
@@ -18,13 +17,14 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class SpawnerUI {
     private static int REFUEL_COST = 5000;
-    private static Map<Player, UIInfo> viewers = new HashMap<>();
+    private static Map<Player, UIContext> viewers = new HashMap<>();
     private static ItemStack[] contents = new ItemStack[9 * 3];
 
     public static void open(Player player, JsonSpawner wrapper, EntityType type, Main main) {
@@ -41,7 +41,7 @@ public class SpawnerUI {
                 "&7Current Tier: &c{tier}".replace("{tier}", String.valueOf(wrapper.getTier())),
                 "&7Spawner Type: &c{type}".replace("{type}", ItemCreator.color(main.getAlias(type))),
                 "&7Price per head: &c{price}".replace("{price}", String.valueOf(main.getHeadPrice(type)))), 1));
-        viewers.put(player, new UIInfo(wrapper, main.getServer().getScheduler().scheduleSyncRepeatingTask(main, () -> {
+        viewers.put(player, new UIContext(wrapper, main.getServer().getScheduler().scheduleSyncRepeatingTask(main, () -> {
             inventory.setItem(14, ItemCreator.create(Material.COAL, "&cFuel Spawner", Arrays.asList(
                     "&7Duration: &c1 day",
                     "&7Fueled for: &c{fuel}".replace("{fuel}", TimeUtils.convert(wrapper.getFuel())),
@@ -50,7 +50,7 @@ public class SpawnerUI {
         player.openInventory(inventory);
     }
 
-    public static Map<Player, UIInfo> getViewers() {
+    public static Map<Player, UIContext> getViewers() {
         return viewers;
     }
 
@@ -118,19 +118,19 @@ public class SpawnerUI {
         @EventHandler
         public void on(InventoryCloseEvent event) {
             Player player = (Player) event.getPlayer();
-            UIInfo info = viewers.remove(player);
-            if (info == null) return;
+            UIContext context = viewers.remove(player);
+            if (context == null) return;
 
-            main.getServer().getScheduler().cancelTask(info.getTaskId());
+            main.getServer().getScheduler().cancelTask(context.getTaskId());
         }
 
         @EventHandler
         public void on(InventoryClickEvent event) {
             Player player = (Player) event.getWhoClicked();
-            UIInfo info = viewers.get(player);
-            if (info == null) return;
+            UIContext context = viewers.get(player);
+            if (context == null) return;
 
-            JsonSpawner wrapper = info.getWrapper();
+            JsonSpawner wrapper = context.getWrapper();
             event.setCancelled(true);
             int slot = event.getSlot();
             switch (slot) {
@@ -172,10 +172,10 @@ public class SpawnerUI {
             }
         }
     }
-    public static class UIInfo {
+    public static class UIContext {
         private final JsonSpawner wrapper;
         private final int taskId;
-        public UIInfo(JsonSpawner wrapper, int taskId) {
+        public UIContext(JsonSpawner wrapper, int taskId) {
             this.wrapper = wrapper;
             this.taskId = taskId;
         }
