@@ -1,6 +1,7 @@
 package me.jaime29010.work.exoticcore.ui;
 
 import me.jaime29010.work.exoticcore.Main;
+import me.jaime29010.work.exoticcore.data.JsonPlayer;
 import me.jaime29010.work.exoticcore.data.JsonSpawner;
 import me.jaime29010.work.exoticcore.manager.ExperienceManager;
 import me.jaime29010.work.exoticcore.utils.ItemCreator;
@@ -17,39 +18,39 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class SpawnerUI {
     private static int REFUEL_COST = 5000;
-    private static Map<Player, JsonSpawner> viewers = new HashMap<>();
+    private static Map<Player, UIInfo> viewers = new HashMap<>();
     private static ItemStack[] contents = new ItemStack[9 * 3];
 
-    public static void open(Player player, JsonSpawner spawner, EntityType type, Main main) {
+    public static void open(Player player, JsonSpawner wrapper, EntityType type, Main main) {
         Inventory inventory = Bukkit.createInventory(null, 9 * 3, "{type} Spawner".replace("{type}", ItemCreator.color(main.getAlias(type))));
         inventory.setContents(contents);
 
-        int price = getUpgradePrice(spawner.getTier());
+        int price = getUpgradePrice(wrapper.getTier());
         String cost = price != -999 ? NumberFormatter.format(price) : "Max";
 
         inventory.setItem(12, ItemCreator.create(Material.EMERALD, "&cUpgrade Spawner", Arrays.asList(
-                "&7Current Tier: &c{tier}".replace("{tier}", String.valueOf(spawner.getTier())),
-                "&7Cost to upgrade: &c{cost}".replace("{cost}", spawner.getTier() != 5 ? cost + " xp" : "Max Tier")), 1));
+                "&7Current Tier: &c{tier}".replace("{tier}", String.valueOf(wrapper.getTier())),
+                "&7Cost to upgrade: &c{cost}".replace("{cost}", wrapper.getTier() != 5 ? cost + " xp" : "Max Tier")), 1));
         inventory.setItem(13, ItemCreator.create(Material.CHEST, "&cSpawner Info", Arrays.asList(
-                "&7Current Tier: &c{tier}".replace("{tier}", String.valueOf(spawner.getTier())),
+                "&7Current Tier: &c{tier}".replace("{tier}", String.valueOf(wrapper.getTier())),
                 "&7Spawner Type: &c{type}".replace("{type}", ItemCreator.color(main.getAlias(type))),
                 "&7Price per head: &c{price}".replace("{price}", String.valueOf(main.getHeadPrice(type)))), 1));
-        inventory.setItem(14, ItemCreator.create(Material.COAL, "&cFuel Spawner", Arrays.asList(
-                "&7Duration: &c1 day",
-                "&7Fueled for: &c{fuel}".replace("{fuel}", TimeUtils.convert(spawner.getFuel())),
-                "&7Cost to refuel: &c{cost} xp".replace("{cost}", NumberFormatter.format(REFUEL_COST))), 1));
-        viewers.put(player, spawner);
+        viewers.put(player, new UIInfo(wrapper, main.getServer().getScheduler().scheduleSyncRepeatingTask(main, () -> {
+            inventory.setItem(14, ItemCreator.create(Material.COAL, "&cFuel Spawner", Arrays.asList(
+                    "&7Duration: &c1 day",
+                    "&7Fueled for: &c{fuel}".replace("{fuel}", TimeUtils.convert(wrapper.getFuel())),
+                    "&7Cost to refuel: &c{cost} xp".replace("{cost}", NumberFormatter.format(REFUEL_COST))), 1));
+        }, 0, 20)));
         player.openInventory(inventory);
     }
 
-    public static Map<Player, JsonSpawner> getViewers() {
+    public static Map<Player, UIInfo> getViewers() {
         return viewers;
     }
 
@@ -117,54 +118,74 @@ public class SpawnerUI {
         @EventHandler
         public void on(InventoryCloseEvent event) {
             Player player = (Player) event.getPlayer();
-            viewers.remove(player);
+            UIInfo info = viewers.remove(player);
+            if (info == null) return;
+
+            main.getServer().getScheduler().cancelTask(info.getTaskId());
         }
 
         @EventHandler
         public void on(InventoryClickEvent event) {
             Player player = (Player) event.getWhoClicked();
-            JsonSpawner wrapper = viewers.get(player);
-            if (wrapper != null) {
-                event.setCancelled(true);
-                int slot = event.getSlot();
-                switch (slot) {
-                    case 12: {
-                        //Upgrade
-                        int price = getUpgradePrice(wrapper.getTier());
-                        if (price != -999) {
-                            int exp = ExperienceManager.getTotalExperience(player);
-                            if (exp >= price) {
-                                ExperienceManager.setTotalExperience(player, exp - price);
-                                player.updateInventory();
-                                wrapper.setTier(wrapper.getTier() + 1);
-                                player.sendMessage(Messager.colorize(main.getConfig().getString("messages.spawner-upgraded")
-                                        .replace("%level%", String.valueOf(wrapper.getTier()))
-                                ));
-                            } else {
-                                player.sendMessage(Messager.colorize(main.getConfig().getString("messages.required-exp-upgrade")));
-                            }
-                        } else {
-                            player.sendMessage(Messager.colorize(main.getConfig().getString("messages.spawner-maxed")));
-                        }
-                        player.closeInventory();
-                        break;
-                    }
-                    case 14: {
-                        //Fuel
+            UIInfo info = viewers.get(player);
+            if (info == null) return;
+
+            JsonSpawner wrapper = info.getWrapper();
+            event.setCancelled(true);
+            int slot = event.getSlot();
+            switch (slot) {
+                case 12: {
+                    //Upgrade
+                    int price = getUpgradePrice(wrapper.getTier());
+                    if (price != -999) {
                         int exp = ExperienceManager.getTotalExperience(player);
-                        if (exp >= REFUEL_COST) {
-                            ExperienceManager.setTotalExperience(player, exp - REFUEL_COST);
+                        if (exp >= price) {
+                            ExperienceManager.setTotalExperience(player, exp - price);
                             player.updateInventory();
-                            wrapper.setFuel(wrapper.getFuel() + 86400);
-                            player.sendMessage(Messager.colorize(main.getConfig().getString("messages.spawner-refuel")));
+                            wrapper.setTier(wrapper.getTier() + 1);
+                            player.sendMessage(Messager.colorize(main.getConfig().getString("messages.spawner-upgraded")
+                                    .replace("%level%", String.valueOf(wrapper.getTier()))
+                            ));
                         } else {
-                            player.sendMessage(Messager.colorize(main.getConfig().getString("messages.required-exp-refuel")));
+                            player.sendMessage(Messager.colorize(main.getConfig().getString("messages.required-exp-upgrade")));
                         }
-                        player.closeInventory();
-                        break;
+                    } else {
+                        player.sendMessage(Messager.colorize(main.getConfig().getString("messages.spawner-maxed")));
                     }
+                    player.closeInventory();
+                    break;
+                }
+                case 14: {
+                    //Fuel
+                    int exp = ExperienceManager.getTotalExperience(player);
+                    if (exp >= REFUEL_COST) {
+                        ExperienceManager.setTotalExperience(player, exp - REFUEL_COST);
+                        player.updateInventory();
+                        wrapper.setFuel(wrapper.getFuel() + 86400);
+                        player.sendMessage(Messager.colorize(main.getConfig().getString("messages.spawner-refuel")));
+                    } else {
+                        player.sendMessage(Messager.colorize(main.getConfig().getString("messages.required-exp-refuel")));
+                    }
+                    player.closeInventory();
+                    break;
                 }
             }
+        }
+    }
+    public static class UIInfo {
+        private final JsonSpawner wrapper;
+        private final int taskId;
+        public UIInfo(JsonSpawner wrapper, int taskId) {
+            this.wrapper = wrapper;
+            this.taskId = taskId;
+        }
+
+        public JsonSpawner getWrapper() {
+            return wrapper;
+        }
+
+        public int getTaskId() {
+            return taskId;
         }
     }
 }
