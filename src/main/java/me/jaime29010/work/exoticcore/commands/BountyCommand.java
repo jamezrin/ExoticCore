@@ -113,6 +113,11 @@ public class BountyCommand implements CommandExecutor {
                 player.sendMessage(Messager.colorize(main.getConfig().getString("messages.player-bounty")
                         .replace("%bounty%", String.valueOf(wrapper.getBounty()))
                 ));
+            } else {
+                sender.sendMessage("This command can only be executed by a player");
+                sender.sendMessage("You can execute these commands as console:");
+                Messager.send(sender, "&b/bounty <player> &7- &cShows the bounty of that player");
+                Messager.send(sender, "&b/bounty top &7- &cShows the top ten players with most bounty of the server");
             }
             return true;
         }
