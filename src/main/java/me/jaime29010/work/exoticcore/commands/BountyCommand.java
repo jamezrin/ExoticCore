@@ -2,7 +2,7 @@ package me.jaime29010.work.exoticcore.commands;
 
 import me.jaime29010.work.exoticcore.Main;
 import me.jaime29010.work.exoticcore.data.JsonPlayer;
-import me.jaime29010.work.exoticcore.manager.EcononyManager;
+import me.jaime29010.work.exoticcore.manager.EconomyManager;
 import me.jaime29010.work.exoticcore.utils.Messager;
 import me.jaime29010.work.exoticcore.utils.PluginUtils;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -37,8 +37,8 @@ public class BountyCommand implements CommandExecutor {
                             try {
                                 int amount = Integer.parseInt(args[2]);
                                 if (amount >= main.getConfig().getInt("minimum-bounty")) {
-                                    if (EcononyManager.getEconomy().has(player, amount)) {
-                                        EconomyResponse response = EcononyManager.getEconomy().withdrawPlayer(player, amount);
+                                    if (EconomyManager.getEconomy().has(player, amount)) {
+                                        EconomyResponse response = EconomyManager.getEconomy().withdrawPlayer(player, amount);
                                         if (response.transactionSuccess()) {
                                             wrapper.setBounty(wrapper.getBounty() + amount);
                                             main.getServer().getOnlinePlayers().forEach(other -> {

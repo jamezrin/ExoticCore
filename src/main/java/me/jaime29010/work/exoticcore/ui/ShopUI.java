@@ -3,7 +3,7 @@ package me.jaime29010.work.exoticcore.ui;
 import me.jaime29010.work.exoticcore.Main;
 import me.jaime29010.work.exoticcore.data.JsonBooster;
 import me.jaime29010.work.exoticcore.data.JsonPlayer;
-import me.jaime29010.work.exoticcore.manager.EcononyManager;
+import me.jaime29010.work.exoticcore.manager.EconomyManager;
 import me.jaime29010.work.exoticcore.utils.ItemCreator;
 import me.jaime29010.work.exoticcore.utils.Messager;
 import me.jaime29010.work.exoticcore.utils.SkullType;
@@ -117,7 +117,7 @@ public class ShopUI {
                                             main.getServer().getScheduler().runTask(main, inventory::clear);
                                         }
 
-                                        EconomyResponse response = EcononyManager.getEconomy().depositPlayer(player, wrapper.getBounty());
+                                        EconomyResponse response = EconomyManager.getEconomy().depositPlayer(player, wrapper.getBounty());
                                         if (response.transactionSuccess()) {
                                             player.sendMessage(Messager.colorize(main.getConfig().getString("messages.bounty-reward")
                                                     .replace("%bounty%", String.valueOf(wrapper.getBounty()))

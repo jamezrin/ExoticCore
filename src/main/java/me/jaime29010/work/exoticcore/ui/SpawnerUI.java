@@ -54,7 +54,7 @@ public class SpawnerUI {
         return viewers;
     }
 
-    public static void applyItems(Item... items) {
+    private static void applyItems(Item... items) {
         for (Item item : items) {
             for (int slot : item.getSlots()) {
                 contents[slot] = item.getItemStack();
@@ -70,7 +70,7 @@ public class SpawnerUI {
         );
     }
 
-    public static int getUpgradePrice(int current) {
+    private static int getUpgradePrice(int current) {
         switch (current) {
             case 1: {
                 return 2500;
@@ -90,7 +90,7 @@ public class SpawnerUI {
         }
     }
 
-    public static final class Item {
+    private static final class Item {
         private final ItemStack item;
         private final int[] slots;
 
@@ -172,10 +172,10 @@ public class SpawnerUI {
             }
         }
     }
-    public static class UIContext {
+    private static class UIContext {
         private final JsonSpawner wrapper;
         private final int taskId;
-        public UIContext(JsonSpawner wrapper, int taskId) {
+        private UIContext(JsonSpawner wrapper, int taskId) {
             this.wrapper = wrapper;
             this.taskId = taskId;
         }
